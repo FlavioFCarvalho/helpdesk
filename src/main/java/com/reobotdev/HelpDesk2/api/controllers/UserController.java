@@ -1,30 +1,31 @@
 package com.reobotdev.HelpDesk2.api.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.reobotdev.HelpDesk2.api.entity.User;
-import com.reobotdev.HelpDesk2.api.enums.ProfileEnum;
+import com.reobotdev.HelpDesk2.api.service.UserService;
+
+
 
 @RestController
 @RequestMapping(value="/users")
-public class UserController {
+@CrossOrigin(origins = "*")
+public class UserController{
 	
-	@RequestMapping(method =RequestMethod.GET)
-	public List<User> listar() {
-
-		User user = new User(null, "a@a.com", "12345678", ProfileEnum.ROLE_ADMIN);
-		User user2 = new User(null, "a@3a.com", "12345678", ProfileEnum.ROLE_ADMIN);
-
-		List<User> lista = new ArrayList<>();
-		lista.add(user);
-		lista.add(user2);
-
-		return lista;
+	@Autowired
+	private UserService service;
+	
+	@RequestMapping(value="/{id}",method =RequestMethod.GET)
+	public ResponseEntity<?> listar(@PathVariable Integer id) {
+		
+		User obj = service.buscar(id);
+		return ResponseEntity.ok().body(obj);
 	}
 
 }
