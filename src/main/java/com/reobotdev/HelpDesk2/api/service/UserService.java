@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.reobotdev.HelpDesk2.api.entity.User;
+import com.reobotdev.HelpDesk2.api.entity.dto.UserDTO;
 import com.reobotdev.HelpDesk2.api.repository.UserRepository;
 import com.reobotdev.HelpDesk2.api.service.exception.ObjectNotFountException;
 
@@ -45,9 +46,18 @@ public class UserService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return userRepository.findAll(pageRequest);
 	}
+	
+	public User insert(User obj) {
+		obj.setId(null);
+		return userRepository.save(obj);
+	}
 	public void delete(Integer id) {
 		find(id);
 		userRepository.deleteById(id);
+	}
+	
+	public User fromDTO(UserDTO objDTO) {
+		return new User(objDTO.getId(), objDTO.getEmail(), objDTO.getPassword(), objDTO.getProfile());
 	}
 
 }
