@@ -22,12 +22,8 @@ public class User implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 
-	@NotEmpty(message="Preenchimento obrigatório")
-	@Email(message= "Email inválido!")
 	private String email;
-	
-	@NotEmpty(message="Preenchimento obrigatório")
-	@Length(min=6, max=80, message="O tamanho deve ser entre 6 e 80 caracteres")
+		
 	private String password;
 	
 	private ProfileEnum profile;
@@ -100,8 +96,5 @@ public class User implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
-	
 	
 }
