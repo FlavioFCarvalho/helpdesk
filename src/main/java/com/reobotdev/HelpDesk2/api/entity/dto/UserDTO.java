@@ -34,7 +34,6 @@ public class UserDTO implements Serializable{
 		id = obj.getId();
 		email = obj.getEmail();
 		password = obj.getPassword();
-		profile = obj.getProfile();
 	}
 	
 	public Integer getId() {

@@ -28,9 +28,11 @@ public class HelpDesk2Application implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
-		User user1 = new User( null,"a@a.com", pe.encode("12345678"), ProfileEnum.ROLE_ADMIN);
-		User user2 = new User( null,"a2@a.com", pe.encode("12345678"), ProfileEnum.ROLE_ADMIN);
-
+		User user1 = new User( null,"a@a.com", pe.encode("12345678"));
+		user1.addProfile(ProfileEnum.ADMIN);
+		
+		User user2 = new User(null, "b@f.com", pe.encode("12345678"));
+		user2.addProfile(ProfileEnum.TECNICIAN);
 		userRepository.saveAll(Arrays.asList(user1,user2));
 	}
 

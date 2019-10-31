@@ -1,8 +1,14 @@
 package com.reobotdev.HelpDesk2.api.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,18 +30,25 @@ public class User implements Serializable{
 	@JsonIgnore
 	private String password;
 	
-	private ProfileEnum profile;
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PERFIL")
+	private Set<Integer> profiles = new HashSet<>();
 	
-	public User(){
 		
+	public User(){
+		//addProfile(ProfileEnum.CUSTOMER);
 	}
 
-	public User(Integer id, String email, String password,
-			ProfileEnum profile) {
+	
+
+	public User(Integer id, String email, String password
+			) {
+		super();
 		this.id = id;
 		this.email = email;
 		this.password = password;
-		this.profile = profile;
+		//addProfile(ProfileEnum.CUSTOMER);
+		
 	}
 
 	public Integer getId() {
@@ -62,13 +75,15 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
-	public ProfileEnum getProfile() {
-		return profile;
+	public Set<ProfileEnum> getPerfis() {
+		return profiles.stream().map(x -> ProfileEnum.toEnum(x)).collect(Collectors.toSet());
 	}
 
-	public void setProfile(ProfileEnum profile) {
-		this.profile = profile;
+	public void addProfile(ProfileEnum profile) {
+		profiles.add(profile.getCod());
 	}
+	
+		
 
 	@Override
 	public int hashCode() {
@@ -77,7 +92,7 @@ public class User implements Serializable{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
