@@ -19,7 +19,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.reobotdev.HelpDesk2.api.security.JWTAuthenticationFilter;
+import com.reobotdev.HelpDesk2.api.security.JWTAuthorizationFilter;
 import com.reobotdev.HelpDesk2.api.security.JWTUtil;
+
+
 
 @Configuration
 @EnableWebSecurity
@@ -35,8 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private JWTUtil jwtUtil;
 	
 	private static final String[] PUBLIC_MATCHERS = {
-			"/h2-console/**",
-			"/api/users/**"
+			"/h2-console/**"
 	};
 
 	private static final String[] PUBLIC_MATCHERS_GET = {
@@ -58,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	
