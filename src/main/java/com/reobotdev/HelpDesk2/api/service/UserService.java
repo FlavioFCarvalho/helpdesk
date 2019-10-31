@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.reobotdev.HelpDesk2.api.entity.User;
@@ -21,6 +22,9 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private BCryptPasswordEncoder pe;
+	
 		
 	public User findByEmail(String email) {
 		User obj = userRepository.findByEmail(email);
@@ -30,6 +34,8 @@ public class UserService {
 		}
 		return obj;	
 	}
+	
+	
 
 
 	public User find(Integer id) {
@@ -56,8 +62,9 @@ public class UserService {
 		userRepository.deleteById(id);
 	}
 	
+		
 	public User fromDTO(UserDTO objDTO) {
-		return new User(objDTO.getId(), objDTO.getEmail(), objDTO.getPassword(), objDTO.getProfile());
+		return new User(objDTO.getId(), objDTO.getEmail(),pe.encode(objDTO.getPassword()), objDTO.getProfile());
 	}
 
 }

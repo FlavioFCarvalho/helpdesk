@@ -6,11 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 
-import org.hibernate.validator.constraints.Length;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.reobotdev.HelpDesk2.api.enums.ProfileEnum;
 
 @Entity
@@ -24,6 +21,7 @@ public class User implements Serializable{
 
 	private String email;
 		
+	@JsonIgnore
 	private String password;
 	
 	private ProfileEnum profile;
